@@ -1,5 +1,5 @@
 # TraLAMA + JOSM + SUMO
-Within this Bachelor's Thesis the TraLAMA plugin for JOSM is implemented. It allows the user to export the displayed OpenStreetMap data to SUMO, run a traffic simulation and view the results in JOSM as additional layers.
+The TraLAMA plugin for JOSM allows the user to export the displayed OpenStreetMap data to SUMO, run a traffic simulation and view the results in JOSM as additional layers.
 
 ## Getting Started
 ### Sources  

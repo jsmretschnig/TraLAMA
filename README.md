@@ -5,14 +5,14 @@ The TraLAMA plugin for JOSM allows the user to export the displayed OpenStreetMa
 ### Sources  
 **GIT**  
 Get the source code from the repository using  
-`git clone https://repobruegge.in.tum.de/scm/dsm/jakobs.git`
+`git clone https://github.com/jetoff41/TraLAMA`
 
 ### Prerequisites
 * [Docker](https://www.docker.com) - Enterprise Container Platform for High-Velocity Innovation
 
 #### macOS
 * [XQuartz](https://www.xquartz.org) - X11
-* [TraLAMA.app](http://www.tralama.de) - *currently within the repository*
+* [TraLAMA.app](http://www.tralama.de) - *can be found within the repository*
 
 **Prepare XQuartz on macOS**  
 1. Open XQuartz using the `xhost +` command
@@ -32,13 +32,19 @@ Get the source code from the repository using
 1. Start Lifeboat and select the `docker-compose.yml` file.
 
 ### Installing
-0. Start Docker :)
+0. Start Docker
 
 **1. Build Docker Images**  
 *We assume that you are inside each docker folder*
 
 1. Build JOSM docker with `docker build . -t josm-img`  
 2. Build SUMO docker with `docker build . -t sumo-img`
+
+**Hints:**  
+*This can take up to 30 minutes. To build the sumo-img successfully, the memory size for Docker needs to be at least 4GB.*
+
+**1.1 Docker Images from Docker Hub**  
+As an alternative, the docker images can be downloaded from `https://hub.docker.com/r/jetoff41/josm-tralama` and `https://hub.docker.com/r/jetoff41/sumo-tralama`. However, to start these images properly, data from this repository is required.
 
 ### Starting
 
@@ -55,14 +61,8 @@ Get the source code from the repository using
 Note: The application requires the xhost executable within `/opt/X11/bin/` and the docker-compose executable within `/Applications/Docker.app/Contents/Resources/bin/`.
 
 ### Starting (alternative)
-**3.1 Run (simultaneously)**  
+**3 Run (simultaneously)**  
 The easiest way to run both docker-containers simultaneously is to call `docker-compose up`  
-
-**3.2 Run (separately)**  
-*(prototype)*
-1. Run JOSM with `docker run -ti -e DISPLAY=host.docker.internal:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v ./data:/ACPS/data -v --net=host -p 3030:3030 --name josm-container josm-img`
-
-2. Run SUMO with `docker run -ti -e DISPLAY=host.docker.internal:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v ./data:/ACPS/data -v ./tools:/ACPS/tools --net=host -p 4040:4040 --name sumo-container sumo-img`
 
 _______________________________________________________________________________
 
@@ -81,11 +81,11 @@ _______________________________________________________________________________
 can be found in [./data/](./data/)
 
 **Demand Data**  
-1. Static Demand Data for Kirchheim  
+1. Static Traffic Demand Data for Kirchheim  
 can be found in [./data/input-simulation/demand/](./data/input-simulation/demand/)
 
 ### Output Data
-can be found in [./data/output-simulation/](./data/output-simulation/)
+can be found in [./data/output-simulation/](./data/output-simulation/) after each simulation
 
 _______________________________________________________________________________
 

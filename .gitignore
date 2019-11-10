@@ -1,0 +1,27 @@
+.DS_Store
+.idea/
+
+data/output-simulation/*
+data/out/*
+
+app/
+
+josm/plugins/TraLAMA/build
+josm/plugins/TraLAMA/javadoc
+josm/plugins/TraLAMA/out
+
+ACPS/
+
+# ignore everything in
+josm/.svn
+josm/core
+josm/dist
+josm/i18n
+josm/oldplugins
+josm/plugins/*
+
+# but not these files
+#!josm/dist/TraLAMA.jar
+!josm/plugins/TraLAMA
+
+old/python/__pycache__

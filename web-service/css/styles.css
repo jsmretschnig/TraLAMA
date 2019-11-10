@@ -1,0 +1,37 @@
+html,
+body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#map {
+    margin: 20px;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    height: -moz-calc(100% - 40px);
+    height: -webkit-calc(100% - 50px);
+}
+
+.card {
+    width: 20rem;
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    left: 80px;
+    top: 55px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+}
+
+input {
+    width: 100%;
+}
+
+#defaultButton {
+/**/
+}
+
+#homeButton {
+/**/
+}

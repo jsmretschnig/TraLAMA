@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Traffic Load Map</title>
+    
+    <!--  FAVICON -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <!--  FAVICON END -->
+    
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <script src="js/leaflet-heat.js"></script>
+    <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+
+    <!--    Bootstrap   -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--    Bootstrap end   -->
+
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+
+<body>
+    <div class="card">
+        <div class="card-body">
+            <h5 id="title" class="card-title"></h5>
+            <h6 id="subtitle" class="card-subtitle mb-2 text-muted"></h6>
+            <p id="description" class="card-text"></p>
+            <hr>
+            <p>Style Options</p>
+            <div class="sliderContainer">
+                <span id="rangeMax">Maximum: 12</span><br>
+                <input id="maxSlide" class="slider" type="range" min="1" max="50" value="12" step="1" />
+            </div>
+            <div class="sliderContainer">
+                <span id="rangeRadius">Radius: 10</span><br>
+                <input id="radiusSlide" class="slider" type="range" min="1" max="30" value="10" step="1" />
+            </div>
+            <div class="sliderContainer">
+                <span id="rangeBlur">Blur: 15</span><br>
+                <input id="blurSlide" class="slider" type="range" min="1" max="50" value="15" step="1" />
+            </div>
+            <div class="sliderContainer">
+                <span id="rangeOpacity">Opacity: 100%</span><br>
+                <input id="opacitySlide" class="slider" type="range" min="1" max="100" value="100" step="1" />
+            </div>
+            <br>
+            <button id="defaultButton" type="button" class="btn btn-primary btn-sm">Default</button>
+            <a id="homeButton" class="btn btn-outline-secondary btn-sm" href="http://www.tralama.de" role="button">&laquo; Home</a>
+        </div>
+    </div>
+    <div id="map"></div>
+
+    <!--
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="files[]" multiple />
+        <input type="submit" value="Upload File" name="submit" />
+    </form>
+    <script src="js/upload.js"></script>
+-->
+
+    <!--
+    <div class="file-upload-wrapper">
+        <input type="file" id="input-file-now" class="file-upload" />
+    </div>
+-->
+
+    <script>
+        // demo data
+        // latLong list
+        //        var latlngs = [
+        //            [31.11170336451878, -238.6211585998535],
+        //            [31.11287911621422, -238.62034320831296],
+        //            [31.11387114538065, -238.61987113952634],
+        //            [31.113512913821978, -238.6219310760498],
+        //            [31.113687437057877, -238.62180233001706],
+        //            [31.113880330787456, -238.6220008134842],
+        //            [31.111372681730806, -238.62699508666992],
+        //            [31.116920651603653, -238.6219310760498],
+        //            [31.117508496961687, -238.62012863159183],
+        //            [31.11249332429425, -238.62469911575315],
+        //            [31.113852774564364, -238.62349748611447],
+        //            [31.113852774564364, -238.62349748611447],
+        //            [31.114293673173815, -238.62293958663938],
+        //            [31.112970971202156, -238.6205148696899],
+        //            [31.116204210151107, -238.62201690673828],
+        //            [31.11491827603177, -238.62343311309817],
+        //            [31.115891913466637, -238.6236476898193]
+        //        ];
+
+        // Queue up datasets using d3 Queue
+        d3.queue()
+            .defer(d3.csv, "./data/post.csv")
+            .defer(d3.json, "./data/info.json")
+            .await(ready);
+
+        // Ready Function, runs when data is loaded
+        function ready(error, data, info) {
+            if (error) throw error;
+            console.log("Successfully loaded csv and json data");
+
+            d3.select("#title").text("User: " + info["user"]);
+            d3.select("#subtitle").text("Upload Date: " + info["date"]);
+            d3.select("#description").html("Simulation Time: " + info["demand"] + "<br>Simulation Length: " + info["simLength"] + " steps<br>Step Length: " + info["stepLength"] + " seconds");
+
+            d3.select(".card").style("visibility", "visible");
+
+            var latlngs = new Array(); // Create empty object for holding dataset
+            var count = 0;
+            var sumLat = 0;
+            var sumLong = 0;
+            data.forEach(function(d) {
+                latlngs[count] = new Array(2);
+                //                csvData[count]["date"] = d.date;
+                //                csvData[count]["time"] = d.time;
+                latlngs[count][0] = parseFloat(d.latitude);
+                latlngs[count][1] = parseFloat(d.longitude);
+                sumLat += latlngs[count][0];
+                sumLong += latlngs[count][1];
+                count += 1;
+            });
+
+            var avgLat = sumLat / data.length;
+            var avgLong = sumLong / data.length;
+
+            // initialize map
+            var map = L.map('map').setView([avgLat, avgLong], 15); // Kirchheim: 48.169913, 11.752593
+
+            // add contributors
+            var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            }).addTo(map);
+
+            var options = {
+                minOpacity: 0.05,
+                max: 12,
+                radius: 10,
+                blur: 15
+                //                ,gradient: {0.15: '#e4ff7a', 0.3: '#ffe81a', 0.45: '#ffbd00', 0.6: '#ffa000', 0.8: '#fc7f00', 1: 'red'}
+            };
+
+            //            latlngs = [[48.177059,11.73217],[48.172554,11.75498],[48.177059,11.73217],[48.172554,11.75498],[48.177059,11.73217],[48.172554,11.75498],[48.177059,11.73217],[48.172554,11.75498],[48.177059,11.73217],[48.172554,11.75498],[48.177059,11.73217],[48.172554,11.75498]];
+            var heat = L.heatLayer(latlngs, options).addTo(map);
+
+            // when the input range changes update the value
+            d3.select("#maxSlide").on("input", function() {
+                updateMax(+this.value);
+            });
+
+            function updateMax(value) {
+                document.getElementById("rangeMax").innerHTML = "Maximum: " + value;
+                options.max = value;
+                heat.setOptions(options);
+            }
+
+            // when the input range changes update the value
+            d3.select("#radiusSlide").on("input", function() {
+                updateRadius(+this.value);
+            });
+
+            function updateRadius(value) {
+                document.getElementById("rangeRadius").innerHTML = "Radius: " + value;
+                options.radius = value;
+                heat.setOptions(options);
+            }
+
+            // when the input range changes update the value
+            d3.select("#blurSlide").on("input", function() {
+                updateBlur(+this.value);
+            });
+
+            function updateBlur(value) {
+                document.getElementById("rangeBlur").innerHTML = "Blur: " + value;
+                options.blur = value;
+                heat.setOptions(options);
+            }
+
+            // when the input range changes update the value
+            d3.select("#opacitySlide").on("input", function() {
+                updateOpacity(+this.value);
+            });
+
+            function updateOpacity(value) {
+                document.getElementById("rangeOpacity").innerHTML = "Opacity: " + value + "%";
+                d3.select(".leaflet-overlay-pane").style("opacity", value / 100);
+            }
+
+            function defaultOptions() {
+                options = {
+                    minOpacity: 0.05,
+                    max: 12,
+                    radius: 10,
+                    blur: 15
+                };
+                heat.setOptions(options);
+                d3.select(".leaflet-overlay-pane").style("opacity", 1);
+                document.getElementById("rangeMax").innerHTML = "Maximum: " + options.max;
+                document.getElementById("maxSlide").value = options.max;
+                document.getElementById("rangeRadius").innerHTML = "Radius: " + options.radius;
+                document.getElementById("radiusSlide").value = options.radius;
+                document.getElementById("rangeBlur").innerHTML = "Blur: " + options.blur;
+                document.getElementById("blurSlide").value = options.blur;
+                document.getElementById("rangeOpacity").innerHTML = "Opacity: 100%";
+                document.getElementById("opacitySlide").value = 100;
+            }
+
+            d3.select("#defaultButton")
+                .on('click', defaultOptions);
+        }
+
+    </script>
+
+    <footer class="container py-5">
+        <div class="row text-center">
+            <div class="span6" style="float: none; margin: 0 auto;">
+                <small class="d-block mb-3 text-muted">
+                    Bachelor's Thesis
+                    <br>
+                    Technical University of Munich
+                    <br>
+                    <br>
+                    &copy; 2019 by Jakob Smretschnig
+                    <br><br>
+                    Made with <span style="color: #e25555;">&hearts;</span> in Munich
+                </small>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

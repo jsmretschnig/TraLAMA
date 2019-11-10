@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+** This is a template build file for a JOSM  plugin.
+**
+** Maintaining versions
+** ====================
+** See README.template
+**
+** Usage
+** =====
+** Call "ant help" to get possible build targets.
+**
+-->
+<project name="TraLAMA" default="dist" basedir=".">
+
+    <!-- enter the SVN commit message -->
+    <property name="commit.message" value="Commit message"/>
+    <!-- enter the *lowest* JOSM version this plugin is currently compatible with -->
+    <property name="plugin.main.version" value="10580"/>
+
+    <!-- Configure these properties (replace "..." accordingly).
+         See https://josm.openstreetmap.de/wiki/DevelopersGuide/DevelopingPlugins
+    -->
+    <property name="plugin.author" value="Jakob Smretschnig"/>
+    <property name="plugin.version" value="2.0"/>
+    <property name="plugin.date" value="July 2019"/>
+    <property name="plugin.class" value="org.openstreetmap.josm.plugins.TraLAMA.TraLAMA"/>
+    <property name="plugin.description" value="TraLAMA allows the user to export the displayed OSM data to SUMO, run a traffic simulation and view the results in JOSM as additional heat map layers."/>
+    <property name="de_plugin.description" value="TraLAMA ermöglicht dem Nutzer das Exportieren von OSM Daten zu SUMO, einer Verkehrssimulationsplattform. Die Ergebnisse der Simulation können anschließend in JOSM als zusätzliche Ebenen in Form von sogenannten 'Heat Maps' angezeigt werden."/>
+    <property name="plugin.icon" value="images/dialogs/TraLAMA.png"/>
+    <property name="plugin.link" value="http://www.tralama.de"/>
+    <property name="plugin.canloadatruntime" value="true"/>
+
+    <!--<property name="plugin.early" value="..."/>-->
+    <!--<property name="plugin.requires" value="..."/>-->
+    <!--<property name="plugin.stage" value="..."/>-->
+
+    <!-- ** include targets that all plugins have in common ** -->
+    <import file="../build-common.xml"/>
+</project>

@@ -1,0 +1,12 @@
+RewriteEngine On
+
+RewriteRule ^heatmap$ http://www.tralama.de/heatmap.html [R=301,L]
+RewriteRule ^php/json2csv$ http://www.tralama.de/php/json2csv.php [R=301,L]
+
+# if exists
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+
+# remove file extensions
+#RewriteRule ^(.*)\.php$ /$1 [L,R=301]
+#RewriteRule ^(.*)\.html$ /$1 [L,R=301]

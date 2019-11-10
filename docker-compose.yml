@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  josm:
+    image: josm-img
+    container_name: josm-container
+    environment:
+      DISPLAY: 'host.docker.internal:0'
+    ports:
+      - 3030:3030
+    volumes:
+      - '/tmp/.X11-unix:/tmp/.X11-unix:rw'
+      - './data:/ACPS/data'
+
+  sumo:
+    image: sumo-img
+    container_name: sumo-container
+    privileged: true
+    environment:
+      DISPLAY: 'host.docker.internal:0'
+    ports:
+      - 4040:4040
+    volumes:
+      - '/tmp/.X11-unix:/tmp/.X11-unix:rw'
+      - './data:/ACPS/data'

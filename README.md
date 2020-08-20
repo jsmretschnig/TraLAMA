@@ -5,7 +5,7 @@ The TraLAMA plugin for JOSM allows the user to export the displayed OpenStreetMa
 ### Sources  
 **GIT**  
 Get the source code from the repository using  
-`git clone https://github.com/jetoff41/TraLAMA`
+`git clone https://github.com/jsmretschnig/TraLAMA`
 
 ### Prerequisites
 * [Docker](https://www.docker.com) - Enterprise Container Platform for High-Velocity Innovation
